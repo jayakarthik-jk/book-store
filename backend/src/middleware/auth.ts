@@ -1,11 +1,12 @@
 import { Response, NextFunction, Request } from "express";
 import jwt from "jsonwebtoken";
 import { getUser } from "../database/users";
+import Cookies from "cookies";
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header("X-Auth-Token");
+  const cookies = new Cookies(req, res);
+  const token = cookies.get("X-Auth-Token");
   if (!token) return res.status(401).send({ error: "Access denied." });
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     const user = await getUser(decoded as string);

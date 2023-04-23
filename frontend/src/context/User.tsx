@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useContext, useState } from "react";
+import Cookies from "js-cookie"
 
 interface User {
   name: string;
@@ -24,7 +25,10 @@ export const UserContext = createContext<{
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
+  const token = Cookies.get("X-Auth-Token")
+  
   const [user, setUser] = useState(null);
+  console.log(token);
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

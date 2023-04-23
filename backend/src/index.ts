@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { config } from "dotenv";
+import cookieParser from "cookie-parser";
 
 import auth from "./routes/auth";
 import users from "./routes/users";
@@ -10,12 +11,8 @@ import books from "./routes/books";
 config();
 
 const app = express();
-
-app.use(
-  cors({
-    allowedHeaders: ["Content-Type", "X-Auth-Token"],
-  })
-);
+app.use(cors());
+app.use(cookieParser())
 app.use(helmet());
 app.use(express.json());
 
