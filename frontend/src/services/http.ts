@@ -1,5 +1,4 @@
-export const backendUrl =
-  process.env.REACT_APP_BOOK_STORE_BACKEND_URL || "http://localhost:5000";
+export const backendUrl = "https://book-store-backend-8qi2.onrender.com/api";
 export const get = async (url: string) => {
   try {
     const response = await fetch(url, {
