@@ -10,9 +10,17 @@ interface BooksContainerProps {
   }[];
   title: string;
   error?: Error | null;
+  isOwner?: boolean;
+  onDelete?: (id: string) => void;
 }
 
-const BooksContainer = ({ books, title, error }: BooksContainerProps) => {
+const BooksContainer = ({
+  books,
+  title,
+  error,
+  isOwner = false,
+  onDelete,
+}: BooksContainerProps) => {
   const [query, setQuery] = useState("");
 
   const getFilteredBooks = () => {
@@ -23,27 +31,32 @@ const BooksContainer = ({ books, title, error }: BooksContainerProps) => {
   };
   const filteredBooks = getFilteredBooks();
   return (
-    <div>
-      <nav className="navbar">
-        <div className="container-fluid">
-          <h4 className="navbar-brand primary-color">{title}</h4>
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </form>
+    <div className="mt-4">
+      <div className="d-flex justify-content-between align-items-center py-4">
+        <h4 className="primary-color">{title}</h4>
+        <div className="d-flex">
+          <input
+            className="form-control"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         </div>
-      </nav>
+      </div>
       <div className="d-flex h-100 flex-wrap justify-content-evenly align-items-center gap-4">
         {error ? (
           <h1 className="text-white">{error.message}</h1>
         ) : filteredBooks.length > 0 ? (
-          filteredBooks.map((book) => <Book {...book} />)
+          filteredBooks.map((book) => (
+            <Book
+              {...book}
+              key={book.id}
+              isOwner={isOwner}
+              onDelete={onDelete}
+            />
+          ))
         ) : (
           <h1 className="text-white">No books found</h1>
         )}

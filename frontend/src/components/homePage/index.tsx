@@ -10,7 +10,6 @@ const HomePage = () => {
 
   const fetchBooks = async () => {
     const books = await getBooks();
-
     if (books instanceof Error) return setError(books);
     setBooks(books);
   };
@@ -21,7 +20,7 @@ const HomePage = () => {
 
   return (
     <div className="background min-vh-100">
-      <div className="container">
+      <div className="container-fluid">
         <HeroSection />
         <BooksContainer books={books} error={error} title="Available Books" />
       </div>

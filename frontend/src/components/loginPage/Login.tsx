@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { login } from "../../services/auth";
 import { useUser } from "../../context/User";
 import { useNavigate } from "react-router-dom";
+import { getMe } from "../../services/users";
 
 interface props {
   flip: boolean;
@@ -13,6 +14,17 @@ const Login = ({ flip }: props) => {
   const [error, setError] = useState<string | null>(null);
   const { setUser } = useUser();
   const navigate = useNavigate();
+
+  const fetchUser = async () => {
+    const res = await getMe();
+    if (res instanceof Error) return;
+    if (!res.isLoggedIn) return;
+    setUser(res.user);
+    navigate("/");
+  };
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const handleLogin = async () => {
     const user = await login(email, password);

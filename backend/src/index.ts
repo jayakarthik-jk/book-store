@@ -11,10 +11,15 @@ import books from "./routes/books";
 config();
 
 const app = express();
-app.use(cors());
-app.use(cookieParser())
 app.use(helmet());
 app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:5173",
+  })
+);
 
 app.use("/api/auth", auth);
 app.use("/api/users", users);

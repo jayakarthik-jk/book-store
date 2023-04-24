@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { signup } from "../../services/users";
+import { useEffect, useState } from "react";
+import { getMe, signup } from "../../services/users";
 import { useUser } from "../../context/User";
 import { useNavigate } from "react-router-dom";
 
@@ -14,11 +14,19 @@ const Signup = ({ flip }: props) => {
   const [error, setError] = useState<string | null>(null);
   const { setUser } = useUser();
   const navigate = useNavigate();
+
+  const fetchUser = async () => {
+    const res = await getMe();
+    if (res instanceof Error) return;
+    if (!res.isLoggedIn) return;
+    setUser(res.user);
+    navigate("/");
+  };
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   const handleSignup = async () => {
-    // checking if the password is more than 8 characters long,
-    //  at least one number,
-    // one lowercase,
-    // one uppercase letter and one special character
     if (password.length < 8) return setError("password is too short");
     if (!password.match(/[0-9]/))
       return setError("password must contain a number");

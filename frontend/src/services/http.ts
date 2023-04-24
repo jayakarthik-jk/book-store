@@ -1,14 +1,12 @@
 export const backendUrl = "http://localhost:5000/api";
-const token_label = "X-Auth-Token";
 export const get = async (url: string) => {
   try {
-    let token = localStorage.getItem(token_label);
     const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        [token_label]: token || "",
       },
+      credentials: "include",
     });
     const data = await response.json();
     if (response.ok) return data;
@@ -25,13 +23,9 @@ export const post = async (url: string, body: any) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(body),
     });
-    const token = response.headers.get(token_label);
-    localStorage.setItem(token_label, token || "");
-
-    console.log(response.headers.get(token_label));
-
     const data = await response.json();
     if (response.ok) return data;
     else return new Error(data.error);
@@ -42,13 +36,12 @@ export const post = async (url: string, body: any) => {
 
 export const remove = async (url: string) => {
   try {
-    let token = localStorage.getItem(token_label);
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        [token_label]: token || "",
       },
+      credentials: "include",
     });
     const data = await response.json();
     if (response.ok) return data;

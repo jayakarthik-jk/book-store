@@ -1,6 +1,5 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-import Cookies from "cookies";
 
 import { login } from "../database/auth";
 
@@ -12,11 +11,14 @@ router.post("/login", async (req, res) => {
   if (user instanceof Error)
     return res.status(400).send({ error: user.message });
   const token = jwt.sign(user.id, process.env.JWT_SECRET as string);
-  
-  const cookies = new Cookies(req, res, {
-    
+
+  res.cookie("X-Auth-Token", token, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    sameSite: "none",
+    secure: true,
   });
-  cookies.set("X-Auth-Token", token);
+
   res.send(user);
 });
 

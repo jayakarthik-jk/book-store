@@ -1,5 +1,11 @@
-import { ReactNode, createContext, useContext, useState } from "react";
-import Cookies from "js-cookie"
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { getMe } from "../services/users";
 
 interface User {
   name: string;
@@ -25,10 +31,18 @@ export const UserContext = createContext<{
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const token = Cookies.get("X-Auth-Token")
-  
-  const [user, setUser] = useState(null);
-  console.log(token);
+  const [user, setUser] = useState<User | null>(null);
+
+  const fetchUser = async () => {
+    const res = await getMe();
+    if (res instanceof Error) return;
+    if (!res.isLoggedIn) return;
+    setUser(res.user);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}

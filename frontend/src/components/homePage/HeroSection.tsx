@@ -5,7 +5,7 @@ const HeroSection = () => {
   const { user } = useUser();
   return (
     <div
-      className="row"
+      className="row books-bg"
       style={{
         height: "65vh",
       }}
@@ -21,12 +21,6 @@ const HeroSection = () => {
               <Link to="/profile" className="btn primary-background text-light">
                 Profile
               </Link>
-              <Link
-                to="/books/upload"
-                className="btn primary-background text-light"
-              >
-                Upload
-              </Link>
             </>
           ) : (
             <Link to="/login" className="btn primary-background text-light">
@@ -35,11 +29,7 @@ const HeroSection = () => {
           )}
         </div>
       </div>
-      <div className="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, enim
-        sed explicabo quasi alias suscipit voluptate. Delectus, aperiam incidunt
-        minus totam ratione ex nihil maiores, amet aliquid error sunt suscipit.
-      </div>
+      <div className="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center"></div>
     </div>
   );
 };

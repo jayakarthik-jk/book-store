@@ -19,10 +19,12 @@ const UploadPage = () => {
   const handleSubmit = async () => {
     const book = await createBook(name, author);
     if (book instanceof Error) return setError(book.message);
-    const me = getMe();
-    if (me instanceof Error) return setError(me.message);
-    setUser(me);
-    console.log(book);
+    const res = await getMe();
+
+    if (res instanceof Error) return;
+    if (!res.isLoggedIn) return;
+    setUser(res.user);
+    navigate("/profile");
   };
   return (
     <div className="background min-vh-100 d-flex flex-column justify-content-center align-items-center">
