@@ -1,4 +1,5 @@
-export const backendUrl = "http://localhost:5000/api";
+export const backendUrl =
+  process.env.REACT_APP_BOOK_STORE_BACKEND_URL || "http://localhost:5000";
 export const get = async (url: string) => {
   try {
     const response = await fetch(url, {
